@@ -39,3 +39,5 @@ stats.json
 .eslintcache
 .stylelintcache
 .history
+
+.env

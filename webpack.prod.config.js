@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-enable import/no-extraneous-dependencies */
 
+const dotenv = require('dotenv').config({path: __dirname + '/.env'})
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
@@ -182,6 +183,7 @@ module.exports = {
         FE_CONDITIONAL_ENV: JSON.stringify(process.env.FE_CONDITIONAL_ENV || 'production'),
         USE_DEV_NETWORKS: JSON.stringify(process.env.USE_DEV_NETWORKS),
         CLAIM_ONLY: JSON.stringify(process.env.CLAIM_ONLY),
+        DOTENV_PARSED: JSON.stringify(dotenv.parsed),
       },
     }),
     new UglifyJsPlugin(),
