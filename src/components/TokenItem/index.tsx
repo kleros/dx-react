@@ -1,9 +1,7 @@
 import React from 'react'
 import { TokenMod, BigNumber, DefaultTokenObject, TokenName } from 'types'
 import { FIXED_DECIMALS } from 'globals'
-import { tokenSVG } from 'tokens'
-
-// import TOKEN_SVGS from 'assets/tokens'
+import etherLogo from '../../assets/tokens/ETH.svg'
 
 export interface TokenItemProps extends DefaultTokenObject {
   onClick?(props: TokenItemProps): any,
@@ -30,15 +28,23 @@ export const NoTokenItem: React.SFC<{ onClick: (rest: any) => void, mod: string 
 }
 
 const TokenItem: React.SFC<TokenItemProps> = ({ onClick, generatesMGN = true, ...rest }) => {
-  const { mod, balance, name, symbol, decimals, address } = rest
+  const { mod, balance, name, symbol, decimals, address, symbolMultihash, isETH } = rest
 
   return (
     <div className="tokenItem" onClick={onClick && (() => onClick(rest))}>
       {mod && <strong>{mod2Title[mod] || mod}</strong>}
 
       {/* Token image / icon */}
-      {/* <img className="dataCoin" src={tokenSVG.has(symbol) ? TOKEN_SVGS[symbol] : TOKEN_SVGS['DEFAULT_TOKEN']}/> */}
-      <i data-coin={tokenSVG.has(symbol) ? symbol : 'DEFAULT_TOKEN'}></i>
+      <div style={{
+        height: '80px',
+        width: '80px',
+        backgroundColor: '#fcfcfc94',
+        backgroundImage: `url(${ isETH ? etherLogo : `${process.env.DOTENV_PARSED.IPFS_GATEWAY}${symbolMultihash}`})`,
+        backgroundPosition: 'center',
+        backgroundSize: 'contain',
+        backgroundRepeat: 'no-repeat',
+        margin: '20px auto',
+      }} />
 
       <big>{name}</big><code title={address}>{symbol}</code>
       <small>{mod && (mod === 'sell' ? 'AVAILABLE' : 'CURRENT')} BALANCE:</small>
