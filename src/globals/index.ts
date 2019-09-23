@@ -38,6 +38,11 @@ export const network2URL: Network2URL = {
   UNKNOWN: '//localhost:5000/',
 }
 
+export const networkNames = {
+  1: 'mainnet',
+  42: 'kovan',
+}
+
 export const network2RPCURL = {
   RINKEBY: 'https://rinkeby.infura.io/',
   UNKNOWN: 'http://127.0.0.1:8545',

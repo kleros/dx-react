@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-enable import/no-extraneous-dependencies */
 
+const dotenv = require('dotenv').config({path: __dirname + '/.env'})
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -172,6 +173,7 @@ module.exports = {
         CLAIM_ONLY: JSON.stringify(process.env.CLAIM_ONLY),
         VERSION: JSON.stringify(`${version}#${build}`),
         WHITELIST: JSON.stringify(whitelist),
+        DOTENV_PARSED: JSON.stringify(dotenv.parsed),
       },
     }),
     new CopyWebpackPlugin([{

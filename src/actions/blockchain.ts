@@ -4,6 +4,7 @@ import { createAction } from 'redux-actions'
 import { batchActions } from 'redux-batched-actions'
 
 import localForage from 'localforage'
+import Web3Latest from 'web3latest'
 
 import { getActiveProviderObject, getSelectedProvider } from 'selectors/blockchain'
 import { getTokenName } from 'selectors/tokens'
@@ -39,6 +40,8 @@ import {
   claimAndWithdrawSellerFundsFromSeveralAuctions,
 } from 'api'
 
+import getERC20Tokens from '../tokens/token-lists'
+
 import { promisedContractsMap, contractsMap } from 'api/contracts'
 import tokensMap from 'api/apiTesting'
 import { getDecoderForABI, checkTokenListJSON, timeoutCondition } from 'utils'
@@ -71,6 +74,7 @@ import {
   NETWORK_TIMEOUT,
   ETHEREUM_NETWORKS,
   COMPANY_NAME,
+  networkNames,
 } from 'globals'
 
 import {
@@ -271,33 +275,25 @@ export const getTokenList = (network?: number | string) => async (dispatch: Func
 
   if (!areTokensAvailableAndUpdated) {
     network = network || await getNetwork() || 'NONE'
+    const web3Latest = new Web3Latest(
+      new Web3Latest.providers.HttpProvider(
+        `https://${networkNames[network]}.infura.io/v3/${process.env.DOTENV_PARSED.INFURA_PRODUCT_ID}`,
+      ),
+    )
 
     // user has tokens in localStorage BUT hash is not updated
     if (defaultTokens) await localForage.removeItem('defaultTokens')
 
     switch (network) {
-      case '4':
-      case ETHEREUM_NETWORKS.RINKEBY:
-        console.log(`Detected connection to ${ETHEREUM_NETWORKS.RINKEBY}`)
-        defaultTokens = {
-          hash: RINKEBY_TOKEN_LIST_HASH,
-          tokens: process.env.FE_CONDITIONAL_ENV === 'production'
-            ?
-            require('../tokens/token-lists/RINKEBY/prod-token-list.json') as any
-            :
-            require('../tokens/token-lists/RINKEBY/dev-token-list.json') as any,
-        }
-        console.log('Rinkeby Token List:', defaultTokens.tokens.elements)
-        break
-
       case '42':
       case ETHEREUM_NETWORKS.KOVAN:
         console.log(`Detected connection to ${ETHEREUM_NETWORKS.KOVAN}`)
+
         defaultTokens = {
           hash: KOVAN_TOKEN_LIST_HASH,
-          tokens: require('../tokens/token-lists/KOVAN/prod-token-list.json') as any,
+          tokens: await getERC20Tokens(network, web3Latest) as any,
         }
-        console.log('Rinkeby Token List:', defaultTokens.tokens.elements)
+        console.log('Kovan Token List:', defaultTokens.tokens.elements)
         break
 
       case '1':
@@ -306,7 +302,7 @@ export const getTokenList = (network?: number | string) => async (dispatch: Func
 
         defaultTokens = {
           hash: MAINNET_TOKEN_LIST_HASH,
-          tokens: require('../tokens/token-lists/MAINNET/prod-token-list.json') as any,
+          tokens: await getERC20Tokens(network, web3Latest) as any,
         }
         console.log('Mainnet Token List:', defaultTokens.tokens.elements)
         break
