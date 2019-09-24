@@ -108,7 +108,7 @@ export default async (network: string, web3: any) => {
     console.error(err)
   }
 
-  await Promise.all(elements.filter(token => token.decimals === '0').map(async token => {
+  await Promise.all(elements.filter(token => token.decimals.toString() === '0').map(async token => {
     try {
       const tokenContract = new web3.eth.Contract(erc20DetailedABI, token.address)
       const decimals = (await tokenContract.decimals()).toNumber()

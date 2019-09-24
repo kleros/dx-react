@@ -4,7 +4,7 @@ import { createAction } from 'redux-actions'
 import { batchActions } from 'redux-batched-actions'
 
 import localForage from 'localforage'
-import Web3Latest from 'web3latest'
+import Web3Latest from 'web3Latest'
 
 import { getActiveProviderObject, getSelectedProvider } from 'selectors/blockchain'
 import { getTokenName } from 'selectors/tokens'
@@ -79,11 +79,9 @@ import {
 
 import {
   ETH_ADDRESS,
-  RINKEBY_TOKEN_LIST_HASH,
   KOVAN_TOKEN_LIST_HASH,
   MAINNET_TOKEN_LIST_HASH,
   TokenListHashMap,
-
 } from 'tokens'
 
 import { setDxBalances, getAllDXTokenInfo } from 'actions/dxBalances'
@@ -275,9 +273,10 @@ export const getTokenList = (network?: number | string) => async (dispatch: Func
 
   if (!areTokensAvailableAndUpdated) {
     network = network || await getNetwork() || 'NONE'
+    const dotenvParsed: any = process.env.DOTENV_PARSED
     const web3Latest = new Web3Latest(
       new Web3Latest.providers.HttpProvider(
-        `https://${networkNames[network]}.infura.io/v3/${process.env.DOTENV_PARSED.INFURA_PRODUCT_ID}`,
+        `https://${networkNames[network]}.infura.io/v3/${dotenvParsed.INFURA_PRODUCT_ID}`,
       ),
     )
 

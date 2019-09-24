@@ -9,6 +9,7 @@ export interface TokenItemProps extends DefaultTokenObject {
   name: TokenName,
   generatesMGN?: boolean,
   balance: BigNumber | number,
+  symbolMultihash?: string
 }
 
 const mod2Title: {[P in TokenMod]: string} = {
@@ -29,6 +30,7 @@ export const NoTokenItem: React.SFC<{ onClick: (rest: any) => void, mod: string 
 
 const TokenItem: React.SFC<TokenItemProps> = ({ onClick, generatesMGN = true, ...rest }) => {
   const { mod, balance, name, symbol, decimals, address, symbolMultihash, isETH } = rest
+  const dotenvParsed: any = process.env.DOTENV_PARSED
 
   return (
     <div className="tokenItem" onClick={onClick && (() => onClick(rest))}>
@@ -39,7 +41,7 @@ const TokenItem: React.SFC<TokenItemProps> = ({ onClick, generatesMGN = true, ..
         height: '80px',
         width: '80px',
         backgroundColor: '#fcfcfc94',
-        backgroundImage: `url(${ isETH ? etherLogo : `${process.env.DOTENV_PARSED.IPFS_GATEWAY}${symbolMultihash}`})`,
+        backgroundImage: `url(${ isETH ? etherLogo : `${dotenvParsed.IPFS_GATEWAY}${symbolMultihash}`})`,
         backgroundPosition: 'center',
         backgroundSize: 'contain',
         backgroundRepeat: 'no-repeat',

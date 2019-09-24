@@ -1,0 +1,11 @@
+[build]
+  publish = "dist/"
+  command = "npm run build:all:prod"
+
+[build.environment]
+  NODE_VERSION="10.16.0"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -12,6 +12,7 @@ declare module 'truffle-contract'
 declare module 'web3'
 declare module 'web3/lib/utils/utils.js'
 declare module 'ethjs-abi'
+declare module 'web3Latest'
 
 declare module '*.svg' {
   const content: any
