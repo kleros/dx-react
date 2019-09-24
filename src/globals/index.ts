@@ -110,7 +110,7 @@ export const URLS = {
   APP_URLS_LOCAL: ['localhost', '0.0.0.0', '127.0.0.1'],
   // APP_URLS_PROD: ['slow.trade', 'rinkeby.slow.trade', 'legacy.slow.trade', 'legacy.rinkeby.slow.trade', 'ipfs.io', 'gateway.ipfs.io', 'ipfs.infura.io'],
   APP_URLS_PROD: {
-    ALL: ['slow.trade', 'rinkeby.slow.trade', 'legacy.slow.trade', 'legacy.rinkeby.slow.trade', 'ipfs.io', 'gateway.ipfs.io', 'ipfs.infura.io'],
+    ALL: ['slow.trade', 'rinkeby.slow.trade', 'legacy.slow.trade', 'legacy.rinkeby.slow.trade', 'ipfs.io', 'gateway.ipfs.io', 'ipfs.infura.io', 'ninja-trade.netlify.com'],
     MAIN: ['slow.trade', 'legacy.slow.trade'],
     RINKEBY: ['rinkeby.slow.trade', 'legacy.rinkeby.slow.trade'],
     IPFS: ['ipfs.io', 'gateway.ipfs.io', 'ipfs.infura.io'],

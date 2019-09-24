@@ -96,6 +96,7 @@ async function conditionalRender() {
     else {
       // fallback
       console.warn('No hostname match - fallingback to geographical block')
+      console.warn(URLS.APP_URLS_PROD.MAIN, hostname)
       disabledReason = 'geoblock'
     }
   }
