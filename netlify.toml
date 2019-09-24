@@ -1,5 +1,5 @@
 [build]
-  publish = "dist/"
+  publish = "dist/prod/"
   command = "npm run build:all:prod"
 
 [build.environment]
