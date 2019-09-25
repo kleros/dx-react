@@ -1,6 +1,6 @@
 [build]
   publish = "dist/prod/"
-  command = "npm run build:all:prod"
+  command = "npm run build:netlify"
 
 [build.environment]
   NODE_VERSION="10.16.0"
