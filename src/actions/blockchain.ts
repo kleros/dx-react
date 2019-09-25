@@ -273,6 +273,7 @@ export const getTokenList = (network?: number | string) => async (dispatch: Func
 
   if (!areTokensAvailableAndUpdated) {
     network = network || await getNetwork() || 'NONE'
+    console.warn(JSON.stringify(process.env))
     const dotenvParsed: any = process.env.DOTENV_PARSED
     const web3Latest = new Web3Latest(
       new Web3Latest.providers.HttpProvider(
