@@ -11,6 +11,7 @@
     "build:prod": "npm run clean && cross-env NODE_ENV=production webpack --config webpack.prod.config.js --progress",
     "build:prod:claimOnly": "npm run clean && cross-env CLAIM_ONLY=true NODE_ENV=production webpack --config webpack.prod.config.js --progress",
     "build": "if test \"$NODE_ENV\" = \"production\"; then npm run build:prod; else npm run build:dev; fi;",
+    "build:netlify": "node create-env && npm run build:all:prod",
     "clean": "rimraf dist",
     "start:dev:claimOnly": "cross-env CLAIM_ONLY=true npm start",
     "start:localProd:claimOnly": "FE_CONDITIONAL_ENV='production' CLAIM_ONLY=true npm start",
