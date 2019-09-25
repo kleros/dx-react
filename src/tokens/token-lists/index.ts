@@ -118,9 +118,11 @@ export default async (network: string, web3: any) => {
       // Contract does not implement decimals function. Check dictionary of known tokens.
       // If not present, assume 18 decimal places.
       if (DECIMALS_DICTIONARY[token.address.toLowerCase()] != null) {
+        console.warn(`Using value from dictionary: ${DECIMALS_DICTIONARY[token.address.toLowerCase()]}`)
         token.decimals = DECIMALS_DICTIONARY[token.address.toLowerCase()]
       }
       else {
+        console.warn('Using default: 18')
         token.decimals = 18
       }
     }
