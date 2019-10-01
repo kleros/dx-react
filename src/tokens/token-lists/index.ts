@@ -7,6 +7,11 @@ const ERC20_BADGE_ADDRESS = {
   42: '0x78895ec026aeff2db73bc30e623c39e1c69b1386',
 }
 
+const TRUE_CRYPTOSYSTEM_BADGE_ADDRESS = {
+  1: '0xe0cf18e8630545aa553f88079c75dae56b8fb304',
+  42: '0x8609b256281e17bbb63eb77d20647d96825b2dfa',
+}
+
 const T2CR_ADDRESS = {
   1: '0xebcf3bca271b26ae4b162ba560e243055af0e679',
   42: '0x25dd2659a1430cdbd678615c7409164ae486c146',
@@ -37,6 +42,9 @@ const filter = [
 
 export default async (network: string, web3: any) => {
   const erc20BadgeContract = new web3.eth.Contract(badgeABI, ERC20_BADGE_ADDRESS[network])
+  const trueCryptosystemBadgeContract =
+    new web3.eth.Contract(badgeABI, TRUE_CRYPTOSYSTEM_BADGE_ADDRESS[network])
+
   // We use a view contract to return all the
   // available token data at once.
   const tokensViewContract = new web3.eth.Contract(
@@ -50,70 +58,104 @@ export default async (network: string, web3: any) => {
     address: '0x0',
     decimals: 18,
     isETH: true,
+    hasTrueCryptosystemBadge: false,
   }]
 
-  try {
-    // Fetch addresses of tokens that have the badge.
-    // Since the contract returns fixed sized arrays, we must filter out unused items.
-    let addressesWithBadge : string[] = []
-    let hasMore = true
-    let lastAddress = zeroAddress
-    while (hasMore) {
-      const result = await erc20BadgeContract.methods
-        .queryAddresses(
-          lastAddress, // A token address to start/end the query from. Set to zero means unused.
-          1000, // Number of items to return at once.
-          filter,
-          true, // Return oldest first.
-        ).call()
+  let tokensWithTrueCryptosystemBadge: string[] = []
 
-      addressesWithBadge = addressesWithBadge.concat(result.values.filter((address: string) => address !== zeroAddress))
-      lastAddress = addressesWithBadge[addressesWithBadge.length - 1]
-      hasMore = result.hasMore
-    }
+  // Fetch tokens with the ERC20 badge and tokens with the true cryptosystem badge in parallel.
+  // Tokens with the true cryptosystem badge are displayed first in the list.
+  await Promise.all([
+    (async () => {
+      // Fetch addresses of tokens that have the badge.
+      // Since the contract returns fixed sized arrays, we must filter out unused items.
+      let addressesWithBadge: string[] = []
+      let hasMore = true
+      let lastAddress = zeroAddress
+      while (hasMore) {
+        const result = await erc20BadgeContract.methods
+          .queryAddresses(
+            lastAddress, // A token address to start/end the query from. Set to zero means unused.
+            1000, // Number of items to return at once.
+            filter,
+            true, // Return oldest first.
+          ).call()
 
-    // Fetch their submission IDs on from T2CR.
-    // As with addresses, the contract returns a fixed sized array so we filter out unused slots.
-    const submissionIDs = (await tokensViewContract.methods.getTokensIDsForAddresses(T2CR_ADDRESS[network], addressesWithBadge).call())
-      .filter((tokenID: string) => tokenID !== zeroSubmissionID)
+        addressesWithBadge = addressesWithBadge.concat(result.values.filter((address: string) => address !== zeroAddress))
+        lastAddress = addressesWithBadge[addressesWithBadge.length - 1]
+        hasMore = result.hasMore
+      }
 
-    // With the token IDs, get the information and add it to the object.
-    const fetchedTokens = (await tokensViewContract.methods
-      .getTokens(T2CR_ADDRESS[network], submissionIDs)
-      .call())
-      .filter((tokenInfo: any) => tokenInfo[3] !== zeroAddress)
-      .map((token: any) => ({
-        name: token[1],
-        symbol: token[2],
-        address: token[3],
-        symbolMultihash: token[4],
-        decimals: Number(token[6]),
+      // Fetch their submission IDs on from T2CR.
+      // As with addresses, the contract returns a fixed sized array so we filter out unused slots.
+      const submissionIDs = (await tokensViewContract.methods.getTokensIDsForAddresses(T2CR_ADDRESS[network], addressesWithBadge).call())
+        .filter((tokenID: string) => tokenID !== zeroSubmissionID)
+
+      // With the token IDs, get the information and add it to the object.
+      const fetchedTokens = (await tokensViewContract.methods
+        .getTokens(T2CR_ADDRESS[network], submissionIDs)
+        .call())
+        .filter((tokenInfo: any) => tokenInfo[3] !== zeroAddress)
+        .map((token: any) => ({
+          name: token[1],
+          symbol: token[2],
+          address: token[3],
+          symbolMultihash: token[4],
+          decimals: Number(token[6]),
+        }))
+
+      elements = elements.concat(fetchedTokens)
+
+      await Promise.all(elements.filter(token => token.decimals === 0).map(async token => {
+        try {
+          const tokenContract = new web3.eth.Contract(erc20DetailedABI, token.address)
+          const decimals = (await tokenContract.decimals()).toNumber()
+          token.decimals = decimals
+        } catch (err) {
+          console.warn(`Missing decimals for token of address ${token.address}`)
+          // Contract does not implement decimals function. Check dictionary of known tokens.
+          // If not present, assume 18 decimal places.
+          if (DECIMALS_DICTIONARY[token.address.toLowerCase()] != null) {
+            console.warn(`Using value from dictionary: ${DECIMALS_DICTIONARY[token.address.toLowerCase()]}`)
+            token.decimals = DECIMALS_DICTIONARY[token.address.toLowerCase()]
+          }
+          else {
+            console.warn('Using default: 18')
+            token.decimals = 18
+          }
+        }
       }))
 
-    elements = elements.concat(fetchedTokens)
-  } catch (err) {
-    console.error(err)
-  }
+    })(),
+    (async () => {
+      // Fetch tokens with the true cryptosystem badge
+      let addressesWithBadge: string[] = []
+      let hasMore = true
+      let lastAddress = zeroAddress
+      while (hasMore) {
+        const result = await trueCryptosystemBadgeContract.methods
+          .queryAddresses(
+            lastAddress, // A token address to start/end the query from. Set to zero means unused.
+            1000, // Number of items to return at once.
+            filter,
+            true, // Return oldest first.
+          ).call()
 
-  await Promise.all(elements.filter(token => token.decimals === 0).map(async token => {
-    try {
-      const tokenContract = new web3.eth.Contract(erc20DetailedABI, token.address)
-      const decimals = (await tokenContract.decimals()).toNumber()
-      token.decimals = decimals
-    } catch (err) {
-      console.warn(`Missing decimals for token of address ${token.address}`)
-      // Contract does not implement decimals function. Check dictionary of known tokens.
-      // If not present, assume 18 decimal places.
-      if (DECIMALS_DICTIONARY[token.address.toLowerCase()] != null) {
-        console.warn(`Using value from dictionary: ${DECIMALS_DICTIONARY[token.address.toLowerCase()]}`)
-        token.decimals = DECIMALS_DICTIONARY[token.address.toLowerCase()]
+        addressesWithBadge = addressesWithBadge.concat(
+          result.values.filter((address: string) => address !== zeroAddress),
+        )
+        lastAddress = addressesWithBadge[addressesWithBadge.length - 1]
+        hasMore = result.hasMore
       }
-      else {
-        console.warn('Using default: 18')
-        token.decimals = 18
-      }
-    }
-  }))
+
+      tokensWithTrueCryptosystemBadge = addressesWithBadge
+    })(),
+  ])
+
+  elements.filter(token => tokensWithTrueCryptosystemBadge.includes(token.address))
+    .forEach(token => {
+      token.hasTrueCryptosystemBadge = true
+    })
 
   const tokenList = {
     elements,

@@ -12,7 +12,11 @@ interface TokenListProps {
 
 const TokenList: React.SFC<TokenListProps> = ({ tokens, balances, onTokenClick, approvedTokens }) => (
   <div className="tokenList">
-    {tokens.map((token: DefaultTokenObject) =>
+    {tokens.sort((a, b) => {
+      if (a.hasTrueCryptosystemBadge && !b.hasTrueCryptosystemBadge) return -1
+      if (!a.hasTrueCryptosystemBadge && b.hasTrueCryptosystemBadge) return 1
+      return 0
+    }).map((token: DefaultTokenObject) =>
       <TokenItem
         {...token}
         name={token.name || code2tokenMap[token.symbol]}
