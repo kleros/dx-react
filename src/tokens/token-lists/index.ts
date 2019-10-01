@@ -1,4 +1,3 @@
-import t2crABI from './abis/t2cr.json'
 import badgeABI from './abis/badge.json'
 import tokensViewABI from './abis/tokens-view.json'
 import erc20DetailedABI from './abis/token.json'
@@ -14,8 +13,8 @@ const T2CR_ADDRESS = {
 }
 
 const TOKENS_VIEW_ADDRESS = {
-  1: '0xdc06b2e32399d3db41e69da4d112cf85dde4103f',
-  42: '0x0004d3791c0ce1a43ceba04993e2636af8361035',
+  1: '0xf9b9b5440340123b21bff1ddafe1ad6feb9d6e7f',
+  42: '0xaef5648bb17d474369e1b1eb0c742ba8968a7acc',
 }
 
 const DECIMALS_DICTIONARY = {
@@ -37,15 +36,9 @@ const filter = [
 ]
 
 export default async (network: string, web3: any) => {
-
-  const t2crContract = new web3.eth.Contract(t2crABI, T2CR_ADDRESS[network])
-  const badgeContract = new web3.eth.Contract(badgeABI, ERC20_BADGE_ADDRESS[network])
+  const erc20BadgeContract = new web3.eth.Contract(badgeABI, ERC20_BADGE_ADDRESS[network])
   // We use a view contract to return all the
-  // to return all the available token data at once.
-  // Warning: Some token contracts do not implement the
-  // decimals function. For these cases the decimals field
-  // of the struct will be set to 0. Account for this
-  // if your dapp uses this field.
+  // available token data at once.
   const tokensViewContract = new web3.eth.Contract(
     tokensViewABI,
     TOKENS_VIEW_ADDRESS[network],
@@ -62,33 +55,27 @@ export default async (network: string, web3: any) => {
   try {
     // Fetch addresses of tokens that have the badge.
     // Since the contract returns fixed sized arrays, we must filter out unused items.
-    const addressesWithBadge = (await badgeContract.methods
-      .queryAddresses(
-        zeroAddress, // A token address to start/end the query from. Set to zero means unused.
-        100, // Number of items to return at once.
-        filter,
-        true, // Return oldest first.
-      )
-      .call()).values.filter((address: string) => address !== zeroAddress)
+    let addressesWithBadge : string[] = []
+    let hasMore = true
+    let lastAddress = zeroAddress
+    while (hasMore) {
+      const result = await erc20BadgeContract.methods
+        .queryAddresses(
+          lastAddress, // A token address to start/end the query from. Set to zero means unused.
+          1000, // Number of items to return at once.
+          filter,
+          true, // Return oldest first.
+        ).call()
 
-    // Fetch their submission IDs on the T2CR.
+      addressesWithBadge = addressesWithBadge.concat(result.values.filter((address: string) => address !== zeroAddress))
+      lastAddress = addressesWithBadge[addressesWithBadge.length - 1]
+      hasMore = result.hasMore
+    }
+
+    // Fetch their submission IDs on from T2CR.
     // As with addresses, the contract returns a fixed sized array so we filter out unused slots.
-    const submissionIDs = [].concat(
-      ...(await Promise.all(
-        addressesWithBadge.map((address: string) =>
-          t2crContract.methods
-            .queryTokens(
-              zeroSubmissionID, // A token ID from which to start/end the query from. Set to zero means unused.
-              100, // Number of items to return at once.
-              filter,
-              true, // Return oldest first.
-              address, // The token address for which to return the submissions.
-            )
-            .call()
-            .then((res: any) => res.values.filter((ID: string) => ID !== zeroSubmissionID)),
-        ),
-      )),
-    )
+    const submissionIDs = (await tokensViewContract.methods.getTokensIDsForAddresses(T2CR_ADDRESS[network], addressesWithBadge).call())
+      .filter((tokenID: string) => tokenID !== zeroSubmissionID)
 
     // With the token IDs, get the information and add it to the object.
     const fetchedTokens = (await tokensViewContract.methods
@@ -100,7 +87,7 @@ export default async (network: string, web3: any) => {
         symbol: token[2],
         address: token[3],
         symbolMultihash: token[4],
-        decimals: token[6],
+        decimals: Number(token[6]),
       }))
 
     elements = elements.concat(fetchedTokens)
@@ -108,7 +95,7 @@ export default async (network: string, web3: any) => {
     console.error(err)
   }
 
-  await Promise.all(elements.filter(token => token.decimals.toString() === '0').map(async token => {
+  await Promise.all(elements.filter(token => token.decimals === 0).map(async token => {
     try {
       const tokenContract = new web3.eth.Contract(erc20DetailedABI, token.address)
       const decimals = (await tokenContract.decimals()).toNumber()

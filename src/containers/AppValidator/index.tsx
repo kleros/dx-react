@@ -50,7 +50,7 @@ class AppValidator extends React.Component<any> {
         // setTimeout condition if loading wallet takes too long
         await Promise.race([
           this.appMountSetup(),
-          timeoutCondition(15000, 'Wallet setup timeout. Please try refreshing the page.'),
+          timeoutCondition(20000, 'Wallet setup timeout. Please try refreshing the page.'),
         ])
 
         return this.setState({
