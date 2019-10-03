@@ -133,6 +133,10 @@ export const waitForTx = async (hash: Hash, reuse: boolean = false) => {
     console.log('STOPPED WATCHING', hash)
   } catch (error) {
     console.error(error)
+    if (error.message === 'Invalid JSON RPC response: undefined') {  // TODO: This hack was added for testing purposes. It should be removed.
+      return res
+    }
+
     // don't stop watching the mainFilter
     stopWatchingFunc()
     throw error
