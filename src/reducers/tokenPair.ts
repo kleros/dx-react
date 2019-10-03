@@ -19,6 +19,7 @@ const initialState: TokenPair = {
     decimals: 18,
     address: ETH_ADDRESS,
     isETH: true,
+    symbolMultihash: '',
   },
   buy: undefined,
   sellAmount: '0',

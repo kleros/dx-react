@@ -15,6 +15,10 @@ const mapState = (state: State) => {
     sellTokenAmount: sellAmount,
     // TODO: use BN.mult() inside component
     buyTokenAmount: (+price * +sellAmount).toFixed(FIXED_DECIMALS),
+    sellIsETH: sell.isETH,
+    buyIsETH: buy.isETH,
+    sellTokenSymbolMultihash: sell.symbolMultihash,
+    buyTokenSymbolMultihash: buy.symbolMultihash,
   })
 }
 
