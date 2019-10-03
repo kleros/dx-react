@@ -393,8 +393,8 @@ export const getClosingPrice = () => async (dispatch: Dispatch<any>, getState: a
 const changeETHforWETH = (dispatch: Function, getState: () => State, TokenETHAddress: Account) => {
   let { tokenPair: { sell, buy, sellAmount }, tokenList: { defaultTokenList } } = getState()
   if (sell.isETH || buy.isETH) {
-    if (sell.isETH) sell = defaultTokenList.find(token => token.address === TokenETHAddress)
-    if (buy.isETH) buy = defaultTokenList.find(token => token.address === TokenETHAddress)
+    if (sell.isETH) sell = defaultTokenList.find(token => token.address === Web3Latest.utils.toChecksumAddress(TokenETHAddress))
+    if (buy.isETH) buy = defaultTokenList.find(token => token.address === Web3Latest.utils.toChecksumAddress(TokenETHAddress))
 
     dispatch(selectTokenPair({ sell, buy, sellAmount }))
   }
