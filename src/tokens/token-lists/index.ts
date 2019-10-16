@@ -2,9 +2,9 @@ import badgeABI from './abis/badge.json'
 import tokensViewABI from './abis/tokens-view.json'
 import erc20DetailedABI from './abis/token.json'
 
-const ERC20_BADGE_ADDRESS = {
-  1: '0xcb4aae35333193232421e86cd2e9b6c91f3b125f',
-  42: '0x78895ec026aeff2db73bc30e623c39e1c69b1386',
+const DUTCHX_BADGE_ADDRESS = {
+  1: '0x6e06861cefc3d6ea24483d3f1fe80759a73524b4',
+  42: '0xb3b888988e4f6e581e8108fd73416d57a935c093',
 }
 
 const TRUE_CRYPTOSYSTEM_BADGE_ADDRESS = {
@@ -41,7 +41,7 @@ const filter = [
 ]
 
 export default async (network: string, web3: any) => {
-  const erc20BadgeContract = new web3.eth.Contract(badgeABI, ERC20_BADGE_ADDRESS[network])
+  const dutchxBadgeContract = new web3.eth.Contract(badgeABI, DUTCHX_BADGE_ADDRESS[network])
   const trueCryptosystemBadgeContract =
     new web3.eth.Contract(badgeABI, TRUE_CRYPTOSYSTEM_BADGE_ADDRESS[network])
 
@@ -63,7 +63,7 @@ export default async (network: string, web3: any) => {
 
   let tokensWithTrueCryptosystemBadge: string[] = []
 
-  // Fetch tokens with the ERC20 badge and tokens with the true cryptosystem badge in parallel.
+  // Fetch tokens with the DutchX badge and tokens with the true cryptosystem badge in parallel.
   // Tokens with the true cryptosystem badge are displayed first in the list.
   await Promise.all([
     (async () => {
@@ -73,7 +73,7 @@ export default async (network: string, web3: any) => {
       let hasMore = true
       let lastAddress = zeroAddress
       while (hasMore) {
-        const result = await erc20BadgeContract.methods
+        const result = await dutchxBadgeContract.methods
           .queryAddresses(
             lastAddress, // A token address to start/end the query from. Set to zero means unused.
             1000, // Number of items to return at once.
