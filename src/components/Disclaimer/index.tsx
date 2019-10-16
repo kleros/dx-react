@@ -8,7 +8,6 @@ import disclaimerSVG from 'assets/disclaimer.svg'
 
 import { web3CompatibleNetwork, geoBlockedCitiesToString } from 'utils'
 
-import Imprint from 'components/Imprint'
 import { TermsText } from '../Terms'
 
 import 'assets/pdf/PrivacyPolicy.pdf'
@@ -214,7 +213,6 @@ export default class Disclaimer extends React.Component<DisclaimerProps, Disclai
 
           </div>
         </section>
-        <Imprint cssClass="modalDisclaimer" noTitle={true} />
       </>
     )
   }

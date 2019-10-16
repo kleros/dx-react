@@ -13,7 +13,6 @@ import { getTokenList } from 'actions'
 import { getActiveProvider, getActiveProviderObject } from 'selectors'
 import { withRouter } from 'react-router'
 import { timeoutCondition } from 'utils'
-import { URLS } from 'globals'
 
 const inBrowser = typeof navigator !== 'undefined' && typeof navigator.onLine === 'boolean'
 
@@ -176,8 +175,6 @@ class AppValidator extends React.Component<any> {
       <>
         {/* ENVIRONMENT BANNER */}
         {process.env.FE_CONDITIONAL_ENV === 'development' && <div className="offlineBanner"><span>ATTENTION: You are in DEVELOPMENT</span></div>}
-        {/* CLAIM ONLY BANNER */}
-        {process.env.CLAIM_ONLY && <div className="offlineBanner"><span>ATTENTION: This is a deprecated version of slow.trade. CLAIM ONLY mode is active - for trading on the latest version, please click <a href={`https://${URLS.APP_URLS_PROD.MAIN[0]}`}>here</a>. </span></div>}
         {/* ONLINE/OFFLINE BANNER */}
         { !online && <div className="offlineBanner"><span>App is currently offline - please your check internet connection and refresh the page </span></div> }
         {/* ERROR BANNER */}

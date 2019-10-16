@@ -617,7 +617,7 @@ export const FAQ = ({ handleClick }: ContentPages) =>
     <h1>FAQ</h1>
     <section className="content">
       <p>
-        Please read this <a href="https://blog.gnosis.pm/tagged/dutchx" target="_blank">blog</a> to learn more about the motivation behind the way the DutchX Protocol was designed. For further information and the terms and conditions that apply to the use of our <strong>slow.trade</strong> Platform, please always consult the <Link to="/terms">Terms & Conditions</Link>. Capitalized terms used but not defined here, have the respective meanings given to them in the Terms and Conditions.
+        Please read this <a href="https://blog.gnosis.pm/tagged/dutchx" target="_blank">blog</a> to learn more about the motivation behind the way the DutchX Protocol was designed.
       </p>
     </section>
 

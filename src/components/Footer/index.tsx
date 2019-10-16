@@ -22,14 +22,10 @@ const Footer = ({ network }: FooterProps) =>
                 network === 'RINKEBY'
                     ?
                 <>
-                    This {COMPANY_NAME} version runs on the Rinkeby Test Network: Real funds are not at risk. <a href="./PrivacyPolicy.pdf" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+                    This {COMPANY_NAME} version runs on the Rinkeby Test Network: Real funds are not at risk.
                 </>
                     :
                 <>
-                    <a href="./PrivacyPolicy.pdf" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
-                    <Link to="/cookies">Cookies</Link>
-                    <Link to="/terms">Terms and Conditions</Link>
-                    <Link to="/imprint">Imprint</Link>
                     <Link to="/">Home</Link>
                     <span className="footerLogo"><i>Protocol built by</i><a href={URLS.FOOTER_LOGO_URL} target="_blank"><img src={gnosisLogoSVG} /></a></span>
                 </>

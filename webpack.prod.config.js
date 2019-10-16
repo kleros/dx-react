@@ -23,7 +23,7 @@ module.exports = {
   entry: 'index.tsx',
   output: {
     publicPath: '',
-    path: process.env.CLAIM_ONLY ? `${__dirname}/dist/legacy` : `${__dirname}/dist/prod`,
+    path: `${__dirname}/dist/prod`,
     chunkFilename: '[name].[chunkhash].js',
     filename: '[name].[chunkhash].js',
   },
@@ -182,7 +182,6 @@ module.exports = {
         NODE_ENV: JSON.stringify(nodeEnv),
         FE_CONDITIONAL_ENV: JSON.stringify(process.env.FE_CONDITIONAL_ENV || 'production'),
         USE_DEV_NETWORKS: JSON.stringify(process.env.USE_DEV_NETWORKS),
-        CLAIM_ONLY: JSON.stringify(process.env.CLAIM_ONLY),
         DOTENV_PARSED: JSON.stringify(dotenv.parsed),
       },
     }),

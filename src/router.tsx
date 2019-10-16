@@ -13,15 +13,10 @@ import OrderPanel from 'containers/OrderPanel'
 import WalletPanel from 'containers/WalletPanel'
 import AuctionPanel from 'containers/AuctionPanel'
 import ContentPageContainer from 'containers/ContentPages'
-import Cookies from 'components/Cookies'
-import Imprint from 'components/Imprint'
 
 import GoogleAnalyticsTracking from 'components/GoogleAnalyticsTracking'
 import WalletIntegration from 'containers/WalletIntegration'
 import AppValidator from 'containers/AppValidator'
-import RedirectToDisclaimer from 'containers/RedirectToDisclaimer'
-import Disclaimer from 'containers/Disclaimer'
-import Terms from 'components/Terms'
 
 import { SHOW_FOOTER_CONTENT } from 'globals'
 
@@ -48,15 +43,8 @@ const MGN_WHF = withHeaderAndFooter(MGN)
 // true passed in to show different, solidBackgorund Header
 const ContentPageContainerWHF =
   withHeaderAndFooter(ContentPageContainer, { content: true, dumb: true }, SHOW_FOOTER_CONTENT)
-const CookiesWHF =
-  withHeaderAndFooter(Cookies, { content: true, dumb: true }, SHOW_FOOTER_CONTENT)
-const ImprintWHF =
-  withHeaderAndFooter(Imprint as any, { content: true, dumb: true }, SHOW_FOOTER_CONTENT)
-const TermsWHF =
-  withHeaderAndFooter(Terms, { content: true, dumb: true }, SHOW_FOOTER_CONTENT)
 const FourOhFourWHF =
   withHeaderAndFooter(PageNotFound, { dumb: true }, SHOW_FOOTER_CONTENT)
-const HomeClaimOnly = withHeaderAndFooter(Home, { noMenu: true }, false, { claimOnly: true })
 
 const AppRouter: React.SFC<AppRouterProps> = ({ analytics, history, disabled }) => {
   // App is disabled (Geo Block, Net Block etc)
@@ -71,42 +59,13 @@ const AppRouter: React.SFC<AppRouterProps> = ({ analytics, history, disabled }) 
     )
   }
 
-  // Render Claim Only version of app
-  if (process.env.CLAIM_ONLY) {
-    return (
-      <ConnectedRouter history={history}>
-        <div className="appFlex">
-          <RedirectToDisclaimer/>
-
-          <Switch>
-            <Route path="/verification" component={Disclaimer} />
-
-            <WalletIntegration>
-                <AppValidator>
-                  <Switch>
-                    <Route
-                      exact path="/"
-                      component={HomeClaimOnly}
-                    />
-                    <Redirect to="/" />
-                  </Switch>
-                </AppValidator>
-            </WalletIntegration>
-          </Switch>
-        </div>
-      </ConnectedRouter>
-    )
-  }
   // Render main App
   return (
     <ConnectedRouter history={history}>
       <div className="appFlex">
 
-        <RedirectToDisclaimer/>
         <Switch>
           {/* DISCONNECTED CONTENT PAGES */}
-          <Route path="/verification" component={Disclaimer} />
-          <Route path="/cookies" component={CookiesWHF} />
 
           <Route path="/content/:contentPage" component={ContentPageContainerWHF} />
           <Redirect from="/content" to="/content/HowItWorks" />
@@ -121,9 +80,6 @@ const AppRouter: React.SFC<AppRouterProps> = ({ analytics, history, disabled }) 
 
                 {/* TODO: check for valid params.addr and redirect if necessary */}
                 <Route path="/auction/:sell-:buy-:index" component={AuctionPanelWHF} />
-
-                <Route path="/imprint" component={ImprintWHF}/>
-                <Route path="/terms" component={TermsWHF}/>
 
                 <Route path="/mgn" component={MGN_WHF}/>
 

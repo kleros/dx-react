@@ -11,7 +11,6 @@ import {
   PriceOracleInterface,
 } from './types'
 import { Provider } from 'types'
-import { contractVersionChecker } from 'utils'
 // import { URLS } from 'globals'
 
 const contractNames = [
@@ -136,58 +135,6 @@ const checkENVAndWriteContractAddresses = async () => {
       // assign networks from the file, overriding from /build/contracts with same network id
       // but keeping local network ids
       Object.assign(contrArt.networks, networksDX[contractName])
-    }
-  }
-
-  // in CLAIM_ONLY mode use different contract addresses
-  if (process.env.FE_CONDITIONAL_ENV === 'production' && process.env.CLAIM_ONLY) {
-    const localForage: any = require('localforage')
-
-    const grabOldDXNetworksAndSet = async () => {
-      // Array of old contract addresses
-      let ALL_OLD_CONTRACT_ADDRESSES = require('@gnosis.pm/dx-contracts/networks-old.json') || require('../../test/networks-old')
-
-      // ONLY use version < 2 - safety
-      ALL_OLD_CONTRACT_ADDRESSES = Object.keys(ALL_OLD_CONTRACT_ADDRESSES)
-        .reduce((acc, version) => {
-          const major = +version.split('.')[0]
-          if (major < 3 && major >= 2) {
-            acc[version] = ALL_OLD_CONTRACT_ADDRESSES[version]
-            return acc
-          }
-          return acc
-        }, {})
-
-      // throw if ALL_OLD_CONTRACTS doesn't pass above reducer
-      if (!Object.keys(ALL_OLD_CONTRACT_ADDRESSES).length) throw new Error('No compatible claimable legacy contracts. Current DutchX protocol contracts likely haven\'t been upgraded')
-
-      // check localForage for saved addresses and default to use
-      const [CONTRACT_ADDRESSES_TO_USE] = await Promise.all([
-        localForage.getItem('CONTRACT_ADDRESSES_TO_USE'),
-        localForage.setItem('ALL_OLD_CONTRACT_ADDRESSES', ALL_OLD_CONTRACT_ADDRESSES),
-      ])
-
-      // check if contract addres to use exists OR if the current version of slow.trade is compatible with the version selected
-      if (!CONTRACT_ADDRESSES_TO_USE || contractVersionChecker(CONTRACT_ADDRESSES_TO_USE, 3, 2)) {
-        // from networks-old - old versions of DX to grab addresses
-        const latestVersion = Object.keys(ALL_OLD_CONTRACT_ADDRESSES)[0]
-        await Promise.all([
-          localForage.setItem('ALL_OLD_CONTRACT_ADDRESSES', ALL_OLD_CONTRACT_ADDRESSES),
-          localForage.setItem('CONTRACT_ADDRESSES_TO_USE', ALL_OLD_CONTRACT_ADDRESSES[latestVersion]),
-        ])
-        return ALL_OLD_CONTRACT_ADDRESSES[latestVersion].contracts
-      }
-
-      return CONTRACT_ADDRESSES_TO_USE.contracts
-    }
-
-    const networks = await grabOldDXNetworksAndSet()
-
-    for (const contrArt of ContractsArtifacts) {
-      const { contractName } = contrArt
-      // assign networks from the file, overriding from /build/contracts with same network id
-      // but keeping local network ids
-      Object.assign(contrArt.networks, networks[contractName])
     }
   }
 }

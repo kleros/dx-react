@@ -27,7 +27,7 @@ module.exports = {
   devtool: 'eval-source-map',
   output: {
     publicPath: '',
-    path: process.env.CLAIM_ONLY ? `${__dirname}/dist/legacy` : `${__dirname}/dist/dev`,
+    path: `${__dirname}/dist/dev`,
     filename: 'bundle.js',
   },
   resolve: {
@@ -170,7 +170,6 @@ module.exports = {
         FE_CONDITIONAL_ENV: JSON.stringify(process.env.FE_CONDITIONAL_ENV || 'development'),
         USE_DEV_NETWORKS: JSON.stringify(process.env.USE_DEV_NETWORKS),
         NODE_ENV: JSON.stringify(nodeEnv),
-        CLAIM_ONLY: JSON.stringify(process.env.CLAIM_ONLY),
         VERSION: JSON.stringify(`${version}#${build}`),
         WHITELIST: JSON.stringify(whitelist),
         DOTENV_PARSED: JSON.stringify(dotenv.parsed),
