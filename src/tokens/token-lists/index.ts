@@ -7,9 +7,9 @@ const DUTCHX_BADGE_ADDRESS = {
   42: '0xb3b888988e4f6e581e8108fd73416d57a935c093',
 }
 
-const TRUE_CRYPTOSYSTEM_BADGE_ADDRESS = {
-  1: '0xe0cf18e8630545aa553f88079c75dae56b8fb304',
-  42: '0x8609b256281e17bbb63eb77d20647d96825b2dfa',
+const ERC_20_BADGE_ADDRESS = {
+  1: '0xcb4aae35333193232421e86cd2e9b6c91f3b125f',
+  42: '0x78895ec026aeff2db73bc30e623c39e1c69b1386',
 }
 
 const T2CR_ADDRESS = {
@@ -41,9 +41,9 @@ const filter = [
 ]
 
 export default async (network: string, web3: any) => {
-  const dutchxBadgeContract = new web3.eth.Contract(badgeABI, DUTCHX_BADGE_ADDRESS[network])
-  const trueCryptosystemBadgeContract =
-    new web3.eth.Contract(badgeABI, TRUE_CRYPTOSYSTEM_BADGE_ADDRESS[network])
+  const erc20BadgeContract = new web3.eth.Contract(badgeABI, ERC_20_BADGE_ADDRESS[network])
+  const dutchXbadgeContract =
+    new web3.eth.Contract(badgeABI, DUTCHX_BADGE_ADDRESS[network])
 
   // We use a view contract to return all the
   // available token data at once.
@@ -73,7 +73,7 @@ export default async (network: string, web3: any) => {
       let hasMore = true
       let lastAddress = zeroAddress
       while (hasMore) {
-        const result = await dutchxBadgeContract.methods
+        const result = await erc20BadgeContract.methods
           .queryAddresses(
             lastAddress, // A token address to start/end the query from. Set to zero means unused.
             1000, // Number of items to return at once.
@@ -133,7 +133,7 @@ export default async (network: string, web3: any) => {
       let hasMore = true
       let lastAddress = zeroAddress
       while (hasMore) {
-        const result = await trueCryptosystemBadgeContract.methods
+        const result = await dutchXbadgeContract.methods
           .queryAddresses(
             lastAddress, // A token address to start/end the query from. Set to zero means unused.
             1000, // Number of items to return at once.
