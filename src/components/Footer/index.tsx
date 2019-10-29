@@ -5,7 +5,6 @@ import { State } from 'types'
 
 import 'assets/pdf/PrivacyPolicy.pdf'
 import { getActiveProviderObject } from 'selectors'
-import gnosisLogoSVG from 'assets/img/gnosis_logo.svg'
 
 import { Link } from 'react-router-dom'
 import { COMPANY_NAME, URLS } from 'globals'
