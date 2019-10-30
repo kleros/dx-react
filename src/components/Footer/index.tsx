@@ -7,7 +7,7 @@ import 'assets/pdf/PrivacyPolicy.pdf'
 import { getActiveProviderObject } from 'selectors'
 
 import { Link } from 'react-router-dom'
-import { COMPANY_NAME, URLS } from 'globals'
+import { COMPANY_NAME } from 'globals'
 
 interface FooterProps {
   network: string;
@@ -26,7 +26,6 @@ const Footer = ({ network }: FooterProps) =>
                     :
                 <>
                     <Link to="/">Home</Link>
-                    <span className="footerLogo"><i>Protocol built by</i><a href={URLS.FOOTER_LOGO_URL} target="_blank"><img src={gnosisLogoSVG} /></a></span>
                 </>
             }
         </p>
