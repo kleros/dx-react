@@ -7,7 +7,7 @@ static
 .grunt
 _SpecRunner.html
 __benchmarks__
-dist/
+slowtrade-dist/
 build/
 coverage/
 .module-cache

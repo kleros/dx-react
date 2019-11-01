@@ -22,8 +22,8 @@ module.exports = {
   context: path.join(__dirname, 'src'),
   entry: 'index.tsx',
   output: {
-    publicPath: '',
-    path: `${__dirname}/dist/prod`,
+    publicPath: '/slowtrade-dist/',
+    path: `${__dirname}/slowtrade-dist/`,
     chunkFilename: '[name].[chunkhash].js',
     filename: '[name].[chunkhash].js',
   },

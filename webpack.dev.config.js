@@ -26,8 +26,8 @@ module.exports = {
   entry: 'index.tsx',
   devtool: 'eval-source-map',
   output: {
-    publicPath: '',
-    path: `${__dirname}/dist/dev`,
+    publicPath: '/slowtrade-dist',
+    path: `${__dirname}/slowtrade-dist`,
     filename: 'bundle.js',
   },
   resolve: {
