@@ -14,7 +14,6 @@ import WalletPanel from 'containers/WalletPanel'
 import AuctionPanel from 'containers/AuctionPanel'
 import ContentPageContainer from 'containers/ContentPages'
 
-import GoogleAnalyticsTracking from 'components/GoogleAnalyticsTracking'
 import WalletIntegration from 'containers/WalletIntegration'
 import AppValidator from 'containers/AppValidator'
 
@@ -46,7 +45,7 @@ const ContentPageContainerWHF =
 const FourOhFourWHF =
   withHeaderAndFooter(PageNotFound, { dumb: true }, SHOW_FOOTER_CONTENT)
 
-const AppRouter: React.SFC<AppRouterProps> = ({ analytics, history, disabled }) => {
+const AppRouter: React.SFC<AppRouterProps> = ({ history, disabled }) => {
   // App is disabled (Geo Block, Net Block etc)
   if (disabled) {
     return (
@@ -90,8 +89,6 @@ const AppRouter: React.SFC<AppRouterProps> = ({ analytics, history, disabled }) 
             </AppValidator>
           </WalletIntegration>
         </Switch>
-
-        {analytics && <GoogleAnalyticsTracking />}
       </div>
   </ConnectedRouter>
   )

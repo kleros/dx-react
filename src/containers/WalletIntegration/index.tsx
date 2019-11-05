@@ -124,6 +124,11 @@ class WalletIntegration extends React.Component<WalletIntegrationProps, WalletIn
   render() {
     const { setupComplete, noProvidersDetected } = this.state,
       { children, activeProvider, appLoadBypass } = this.props
+
+    console.info('activeProvider', activeProvider)
+    console.info('noProvidersDetected', noProvidersDetected)
+    console.info('setupComplete', setupComplete)
+
     return appLoadBypass || activeProvider && (noProvidersDetected || setupComplete) ? children : this.walletSelector()
   }
 }

@@ -49,7 +49,7 @@ class AppValidator extends React.Component<any> {
         // setTimeout condition if loading wallet takes too long
         await Promise.race([
           this.appMountSetup(),
-          timeoutCondition(20000, 'Wallet setup timeout. Please try refreshing the page.'),
+          timeoutCondition(30000, 'Wallet setup timeout. Please try refreshing the page.'),
         ])
 
         return this.setState({
@@ -116,7 +116,7 @@ class AppValidator extends React.Component<any> {
 
     // Grabs network relevant token list
     // Sets available auctions relevant to that list
-    await getTokenList(network)
+    getTokenList(network).then(() => console.info('Done fetching token list.'))
     // Initiate Provider
     await providerWatcher(currentProvider, { updateMainAppState, updateProvider, resetMainAppState })
     // initialise basic user state
