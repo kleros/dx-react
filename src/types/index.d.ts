@@ -273,7 +273,6 @@ export interface Settings {
 }
 
 export interface CookieSettings {
-  analytics: boolean;
   cookies: boolean;
 }
 

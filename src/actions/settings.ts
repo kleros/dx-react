@@ -34,7 +34,6 @@ export const asyncSaveSettings = (payload: Partial<Settings>) =>
     const prevState: Settings | Partial<Settings> = (await localForage.getItem('settings')) || { networks_accepted: {} }
     const action = dispatch(saveSettings(payload))
 
-    // const { settings: { disclaimer_accepted, networks_accepted, analytics, cookies } } = getState()
     localForage.setItem('settings', {
       ...prevState,
       disclaimer_accepted: payload.disclaimer_accepted,

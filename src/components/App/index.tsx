@@ -26,18 +26,16 @@ export const initializeWallet = () => walletIntegrationCallback(store)
 locationListener(history)
 
 interface AppProps {
-  analytics?: boolean;
   disabled?: boolean;
   disabledReason?: string;
   networkAllowed?: string;
 }
 
 const App = (props: AppProps): any => {
-  const { settings: { analytics } } = store.getState()
   return (
     <Provider store={store}>
       <ModalContainer isOpen={props.disabled} modalName={props.disabled && 'BlockModal'} {...props}>
-        <AppRouter analytics={analytics} disabled={props.disabled} history={history} />
+        <AppRouter disabled={props.disabled} history={history} />
       </ModalContainer>
     </Provider>
   )}

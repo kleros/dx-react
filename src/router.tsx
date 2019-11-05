@@ -21,7 +21,6 @@ import { SHOW_FOOTER_CONTENT } from 'globals'
 
 interface AppRouterProps {
   history: History;
-  analytics: boolean;
   disabled?: boolean;
 }
 
