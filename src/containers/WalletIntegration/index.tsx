@@ -86,11 +86,11 @@ class WalletIntegration extends React.Component<WalletIntegrationProps, WalletIn
     return (
       <div className="walletChooser">
         <Loader
-            hasData={!this.state.initialising}
-            message="CHECKING WALLET AVAILABILITY..."
-            strokeColor="#fff"
-            strokeWidth={0.35}
-            render={() => (
+          hasData={!this.state.initialising}
+          message="CHECKING WALLET AVAILABILITY..."
+          strokeColor="#fff"
+          strokeWidth={0.35}
+          render={() => (
             <>
               <h1>Please select a wallet</h1>
               <div className={!this.state.initialising ? 'ready' : ''}>
@@ -110,8 +110,8 @@ class WalletIntegration extends React.Component<WalletIntegrationProps, WalletIn
                 })}
               </div>
             </>
-          )}/>
-          {this.state.error && <h3 className="geoBlockBanner" style={{ maxWidth: '60%' }}>{this.state.error.message}</h3>}
+          )} />
+        {this.state.error && <h3 className="geoBlockBanner" style={{ maxWidth: '60%' }}>{this.state.error.message}</h3>}
       </div>
     )
   }
