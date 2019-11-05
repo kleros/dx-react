@@ -693,8 +693,6 @@ interface LastAuctionStats {
 // of it's direct and reciprocal auctions
 const getLastAuctionStats = async (DutchX: DutchExchange, pair: TokenPair, account: Account): Promise<LastAuctionStats> => {
   const lastIndex = await DutchX.getLatestAuctionIndex(pair)
-  console.log('lastIndex: ', lastIndex.toString())
-  console.log('lastIndex + 1: ', lastIndex.add(1).toString())
   const oppositePair = { sell: pair.buy, buy: pair.sell }
 
   const [

@@ -44,12 +44,7 @@ class WalletIntegration extends React.Component<WalletIntegrationProps, WalletIn
   } as WalletIntegrationState
 
   async componentDidMount() {
-    // user has not accepted disclaimer and is looking at cookies, how it works etc
-    // OR
-    // user already has activeProviden
-    // THEN
-    // no need to re-calc everything
-    if (!this.props.disclaimer_accepted || this.props.activeProvider) return this.setState({ setupComplete: true })
+    if (this.props.activeProvider) return this.setState({ setupComplete: true })
 
     const providerObj = Object.values(Providers)
     await registerWallets()
@@ -133,12 +128,11 @@ class WalletIntegration extends React.Component<WalletIntegrationProps, WalletIn
   }
 }
 
-const mapState = ({ blockchain: { activeProvider, appLoadBypass, providers }, settings: { disclaimer_accepted } }: State) => ({
+const mapState = ({ blockchain: { activeProvider, appLoadBypass, providers } }: State) => ({
   activeProvider,
   appLoadBypass,
   providers,
-
-  disclaimer_accepted,
+  disclaimer_accepted: true,
 })
 
 export default connect<WalletIntegrationProps>(mapState as any, { setActiveProvider })(WalletIntegration as any)

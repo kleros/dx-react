@@ -34,10 +34,10 @@ class AppValidator extends React.Component<any> {
   }
 
   async componentDidMount() {
-    const { activeProvider, disclaimer_accepted, appLoadBypass } = this.props
+    const { activeProvider, appLoadBypass } = this.props
     // user has NOT accepted disclaimer, do not load state if user attempts to access some parts of app like Content, Cookies etc
     // user CANNOT get into app as redirect blocks if Disclaimer not accepted
-    if (appLoadBypass || !disclaimer_accepted || activeProvider === 'READ_ONLY') return
+    if (appLoadBypass || activeProvider === 'READ_ONLY') return
 
     try {
       // listens for online/offline status
@@ -166,10 +166,8 @@ class AppValidator extends React.Component<any> {
   }
 
   renderError = () => {
-    const { error, loading, online, set_up_complete } = this.state,
-      { disclaimer_accepted } = this.props
-
-    if (!disclaimer_accepted || loading) return
+    const { error, loading, online, set_up_complete } = this.state
+    if (loading) return
 
     return (
       <>
@@ -210,8 +208,7 @@ const mapState = (state: State) => {
     network: provider ? provider.network : 'UNKNOWN NETWORK',
     unlocked: provider && provider.unlocked,
     available: provider && provider.available,
-
-    disclaimer_accepted: state.settings.disclaimer_accepted,
+    disclaimer_accepted: true,
   }
 }
 
