@@ -921,21 +921,6 @@ export const getSellerOngoingAuctions = async (
       const committedToNextNormal = balanceNext.normal.gt(0)
       const committedToNextInverse = balanceNext.inverse.gt(0)
 
-      console.log(`
-        ${auction.sell.symbol}->${auction.buy.symbol}-${lastIndex}
-        closingPriceDir: ${closingPriceDir}
-        closingPriceOpp: ${closingPriceOpp}
-
-        balanceNormal: ${balanceNormal}
-        balanceInverse: ${balanceInverse}
-
-        currAuctionNeverRanDir: ${currAuctionNeverRanDir}
-        currAuctionNeverRanOpp: ${currAuctionNeverRanOpp}
-
-        indicesWithSellerBalance: ${indicesWithSellerBalance}
-        indicesWithSellerBalanceInverse: ${indicesWithSellerBalanceInverse}
-      `)
-
       if (  // if there are truly no auctions with sellBalance
         !committedToNextNormal && !committedToNextInverse &&
         indicesWithSellerBalance.length === 0 && indicesWithSellerBalanceInverse.length === 0

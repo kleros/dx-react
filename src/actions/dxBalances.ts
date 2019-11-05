@@ -13,7 +13,6 @@ export const getAllDXTokenBalances = async (tokenList: DefaultTokenObject[], acc
 
   const dxTokenBalances = await Promise.all(tokenList.map(({ address }) => getDXTokenBalance(address, account)))
 
-  console.log(dxTokenBalances)
   return dxTokenBalances
 }
 

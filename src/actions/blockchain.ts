@@ -174,7 +174,11 @@ export const updateMainAppState = (condition?: any) => async (dispatch: Dispatch
     getLockedMGNBalance(currentAccount),
     getAllDXTokenInfo(mainList as DefaultTokenObject[], currentAccount),
   ])
-  const { balance } = tokenBalances.find((t: typeof tokenBalances[0]) => t.address === ETH_ADDRESS)
+
+  const tokenBalance = tokenBalances.find((t: typeof tokenBalances[0]) => t.address === ETH_ADDRESS)
+  if (!tokenBalance) return status
+
+  const { balance } = tokenBalance
 
   // dispatch Actions
   dispatch(batchActions([
