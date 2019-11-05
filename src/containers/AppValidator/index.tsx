@@ -116,7 +116,7 @@ class AppValidator extends React.Component<any> {
 
     // Grabs network relevant token list
     // Sets available auctions relevant to that list
-    getTokenList(network).then(() => console.error('Done fetching token list.'))
+    getTokenList(network)
     // Initiate Provider
     await providerWatcher(currentProvider, { updateMainAppState, updateProvider, resetMainAppState })
     // initialise basic user state
