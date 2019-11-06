@@ -8,6 +8,7 @@ import Loader from 'components/Loader'
 import { code2tokenMap } from 'tokens'
 import { DefaultTokenObject, TokenBalances, TokenMod, AccountsSet, AvailableAuctions, TokenPair, Account } from 'types'
 import { handleKeyDown } from 'utils'
+import BigNumber from 'bignumber.js'
 
 const getTokenModAndAddress = createSelector(
   (_: TokenOverlayState, { mod }: TokenOverlayProps) => mod,
@@ -85,8 +86,8 @@ const sortedTokenList = createSelector(
     if (b.symbol === 'WETH') return 1
 
     // // then by balance
-    const balA = balances[a.address].div(a.decimals)
-    const balB = balances[b.address].div(b.decimals)
+    const balA = !balances[a.address] || balances[a.address].isZero() ? new BigNumber(0) : balances[a.address].div(a.decimals)
+    const balB = !balances[b.address] || balances[a.address].isZero() ? new BigNumber(0) : balances[b.address].div(b.decimals)
     if (balA.lt(balB)) return 1
     if (balB.lt(balA)) return -1
 
@@ -122,7 +123,7 @@ const dataLengthCheck = (o1: {} | any[], o2: {} | any[]) => {
   const o1kl = Array.isArray(o1) ? o1.length : Object.keys(o1).length,
     o2kl = Array.isArray(o2) ? o2.length : Object.keys(o2).length
 
-  return o1kl <= o2kl
+  return o1kl <= o2kl && o1kl !== 0 && o2kl !== 0
 }
 
 export interface TokenOverlayProps {
@@ -189,7 +190,7 @@ class TokenOverlay extends Component<TokenOverlayProps, TokenOverlayState> {
         />
         <Loader
           hasData={dataLengthCheck(filteredTokens, tokenBalances)}
-          message="Loading token balances - please wait"
+          message="Loading tokens - please wait"
           reSize={0.72}
           render={() =>
             <TokenList
