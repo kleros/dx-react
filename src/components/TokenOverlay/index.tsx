@@ -119,13 +119,6 @@ const filterTokens = createSelector(
     tokens,
 )
 
-const dataLengthCheck = (o1: {} | any[], o2: {} | any[]) => {
-  const o1kl = Array.isArray(o1) ? o1.length : Object.keys(o1).length,
-    o2kl = Array.isArray(o2) ? o2.length : Object.keys(o2).length
-
-  return o1kl <= o2kl && o1kl !== 0 && o2kl !== 0
-}
-
 export interface TokenOverlayProps {
   tokenList: DefaultTokenObject[],
   tokenPair: TokenPair,
@@ -178,6 +171,7 @@ class TokenOverlay extends Component<TokenOverlayProps, TokenOverlayState> {
     const { filter } = this.state
 
     const filteredTokens = filterTokens(this.state, this.props)
+    console.info('filteredTokens', filteredTokens)
 
     return (
       <div className="tokenOverlay" ref={c => this.outerDiv = c} tabIndex={-1} onKeyDown={(e) => handleKeyDown(e, closeOverlay, 'Escape')}>
@@ -189,7 +183,7 @@ class TokenOverlay extends Component<TokenOverlayProps, TokenOverlayState> {
           reset={resetTokenPairAndCloseOverlay}
         />
         <Loader
-          hasData={dataLengthCheck(filteredTokens, tokenBalances)}
+          hasData={filteredTokens.length > 0}
           message="Loading tokens - please wait"
           reSize={0.72}
           render={() =>

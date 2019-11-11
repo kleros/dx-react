@@ -9,7 +9,8 @@ export interface TokenItemProps extends DefaultTokenObject {
   name: TokenName,
   generatesMGN?: boolean,
   balance: BigNumber | number,
-  symbolMultihash?: string
+  symbolMultihash?: string,
+  balanceLoaded: boolean
 }
 
 const mod2Title: {[P in TokenMod]: string} = {
@@ -29,7 +30,7 @@ export const NoTokenItem: React.SFC<{ onClick: (rest: any) => void, mod: string 
 }
 
 const TokenItem: React.SFC<TokenItemProps> = ({ onClick, generatesMGN = true, ...rest }) => {
-  const { mod, balance, name, symbol, decimals, address, symbolMultihash, isETH } = rest
+  const { mod, balance, name, symbol, decimals, address, symbolMultihash, isETH, balanceLoaded } = rest
   const dotenvParsed: any = process.env.DOTENV_PARSED
 
   return (
@@ -49,8 +50,12 @@ const TokenItem: React.SFC<TokenItemProps> = ({ onClick, generatesMGN = true, ..
       }} />
 
       <big>{name}</big><code title={address}>{symbol}</code>
-      <small>{mod && (mod === 'sell' ? 'AVAILABLE' : 'CURRENT')} BALANCE:</small>
-      <p className={balance ? undefined : 'noBalance'}>{typeof balance !== 'number' && balance.div ? balance.div(10 ** decimals).toFixed(FIXED_DECIMALS) : balance} {symbol}</p>
+      {balanceLoaded && (
+        <>
+          <small>{mod && (mod === 'sell' ? 'AVAILABLE' : 'CURRENT')} BALANCE:</small>
+          <p className={balance ? undefined : 'noBalance'}>{typeof balance !== 'number' && balance.div ? balance.div(10 ** decimals).toFixed(FIXED_DECIMALS) : balance} {symbol}</p>
+        </>
+      )}
       {!generatesMGN && <p className="noMGN">Any auction with <strong>{symbol || address}</strong> won't generate MGN</p>}
     </div>
   )

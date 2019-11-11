@@ -35,6 +35,7 @@ const TokenPair: React.SFC<TokenPairProps> = ({
           balance={sellTokenBalance}
           mod="sell"
           onClick={openOverlay}
+          balanceLoaded
         />
       :
         <NoTokenItem
@@ -56,6 +57,7 @@ const TokenPair: React.SFC<TokenPairProps> = ({
           balance={buyTokenBalance}
           mod="buy"
           onClick={openOverlay}
+          balanceLoaded
         />
         :
         <NoTokenItem
