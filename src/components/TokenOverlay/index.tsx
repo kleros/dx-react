@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { createSelector } from 'reselect'
+import Web3Latest from 'web3Latest'
 
 import TokenOverlayHeader from 'components/TokenOverlayHeader'
 import TokenList from 'components/TokenList'
@@ -10,6 +11,8 @@ import { DefaultTokenObject, TokenBalances, TokenMod, AccountsSet, AvailableAuct
 import { handleKeyDown } from 'utils'
 import BigNumber from 'bignumber.js'
 
+const { utils: { toChecksumAddress }} = Web3Latest
+
 const getTokenModAndAddress = createSelector(
   (_: TokenOverlayState, { mod }: TokenOverlayProps) => mod,
   (_, { tokenPair }) => tokenPair,
@@ -18,12 +21,12 @@ const getTokenModAndAddress = createSelector(
     const oldToken = tokenPair[mod]
 
     const oldAddress = oldToken &&
-      (oldToken.isETH ? WETHAddress : oldToken.address)
+      (oldToken.isETH ? toChecksumAddress(WETHAddress) : toChecksumAddress(oldToken.address))
 
     const oppositeToken = tokenPair[mod === 'sell' ? 'buy' : 'sell']
 
     const oppositeAddress = oppositeToken &&
-      (oppositeToken.isETH ? WETHAddress : oppositeToken.address)
+      (oppositeToken.isETH ? toChecksumAddress(WETHAddress) :  toChecksumAddress(oppositeToken.address))
 
     return {
       mod,
@@ -31,7 +34,7 @@ const getTokenModAndAddress = createSelector(
       oldAddress,
       // opposite in a pair
       oppositeAddress,
-      WETHAddress,
+      WETHAddress: toChecksumAddress(WETHAddress),
     }
   },
 )
@@ -42,13 +45,17 @@ const prefilterByAvailableAuctions = createSelector(
   (_, { MGNAddress }) => MGNAddress,
   getTokenModAndAddress,
   (tokenList, availableAuctions, MGNAddress, { mod, oppositeAddress, WETHAddress }) => {
+    oppositeAddress = oppositeAddress.length > 3 ? toChecksumAddress(oppositeAddress) : oppositeAddress
+    WETHAddress = WETHAddress.length > 0 ? toChecksumAddress(WETHAddress) : WETHAddress
+
     // if opposite token is an empty placeholder, show every token EXCEPT MGN
-    if (!oppositeAddress) return tokenList.filter(t => t.address !== MGNAddress)
+    if (!oppositeAddress) return tokenList.filter(t => (t.isETH || t.address !== MGNAddress))
     // if (oppositeAddress && (oppositeAddress !== ETH_ADDRESS || oppositeAddress === WETHAddress)) return tokenList.filter(t => !t.isETH)
     return tokenList.filter(token => {
       // don't show opposite token as it's already selected for the other position
       // e.g sellToken = ETH, don't show ETH in buyToken
-      if (token.address === oppositeAddress) return false
+      token.address = token.address.length > 3 ? toChecksumAddress(token.address) : token.address
+      if (token.isETH ? oppositeAddress.length === '0x0' : token.address === oppositeAddress ) return false
 
       // check, based on MOD, whether to show isETH and WETH or just WETH
       // buy token should NEVER have both WETH and isETH
@@ -171,7 +178,6 @@ class TokenOverlay extends Component<TokenOverlayProps, TokenOverlayState> {
     const { filter } = this.state
 
     const filteredTokens = filterTokens(this.state, this.props)
-    console.info('filteredTokens', filteredTokens)
 
     return (
       <div className="tokenOverlay" ref={c => this.outerDiv = c} tabIndex={-1} onKeyDown={(e) => handleKeyDown(e, closeOverlay, 'Escape')}>
@@ -183,7 +189,7 @@ class TokenOverlay extends Component<TokenOverlayProps, TokenOverlayState> {
           reset={resetTokenPairAndCloseOverlay}
         />
         <Loader
-          hasData={filteredTokens.length > 0}
+          hasData={filteredTokens.length > 0 || filter.length > 0}
           message="Loading tokens - please wait"
           reSize={0.72}
           render={() =>
