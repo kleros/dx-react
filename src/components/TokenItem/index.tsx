@@ -49,7 +49,9 @@ const TokenItem: React.SFC<TokenItemProps> = ({ onClick, generatesMGN = true, ..
         margin: '20px auto',
       }} />
 
-      <big>{name}</big><code title={address}>{symbol}</code>
+      <big>{name}</big>
+      <br />
+      <code title={address}>{symbol}</code>
       {balanceLoaded && (
         <>
           <small>{mod && (mod === 'sell' ? 'AVAILABLE' : 'CURRENT')} BALANCE:</small>

@@ -45,7 +45,7 @@ const prefilterByAvailableAuctions = createSelector(
   (_, { MGNAddress }) => MGNAddress,
   getTokenModAndAddress,
   (tokenList, availableAuctions, MGNAddress, { mod, oppositeAddress, WETHAddress }) => {
-    oppositeAddress = oppositeAddress.length > 3 ? toChecksumAddress(oppositeAddress) : oppositeAddress
+    oppositeAddress = oppositeAddress && oppositeAddress.length > 3 ? toChecksumAddress(oppositeAddress) : oppositeAddress
     WETHAddress = WETHAddress.length > 0 ? toChecksumAddress(WETHAddress) : WETHAddress
 
     // if opposite token is an empty placeholder, show every token EXCEPT MGN
