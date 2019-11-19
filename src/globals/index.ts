@@ -75,7 +75,7 @@ export const NETWORK_TIMEOUT = process.env.NODE_ENV === 'development' ? 200000 :
 // export const ALLOWED_NETWORK = 'Rinkeby Test Network'
 
 // BigNumber fixed decimal places to sow
-export const FIXED_DECIMALS = 4
+export const FIXED_DECIMALS = 6
 
 export const GAS_PRICE = 5e9
 export const GAS_LIMIT = '250000'
