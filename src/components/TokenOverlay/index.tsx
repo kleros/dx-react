@@ -94,7 +94,7 @@ const sortedTokenList = createSelector(
 
     // // then by balance
     const balA = !balances[a.address] || balances[a.address].isZero() ? new BigNumber(0) : balances[a.address].div(a.decimals)
-    const balB = !balances[b.address] || balances[a.address].isZero() ? new BigNumber(0) : balances[b.address].div(b.decimals)
+    const balB = !balances[b.address] || balances[b.address].isZero() ? new BigNumber(0) : balances[b.address].div(b.decimals)
     if (balA.lt(balB)) return 1
     if (balB.lt(balA)) return -1
 
