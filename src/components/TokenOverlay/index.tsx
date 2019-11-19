@@ -6,12 +6,12 @@ import TokenOverlayHeader from 'components/TokenOverlayHeader'
 import TokenList from 'components/TokenList'
 import Loader from 'components/Loader'
 
-import { code2tokenMap } from 'tokens'
+import { code2tokenMap, ETH_ADDRESS } from 'tokens'
 import { DefaultTokenObject, TokenBalances, TokenMod, AccountsSet, AvailableAuctions, TokenPair, Account } from 'types'
 import { handleKeyDown } from 'utils'
 import BigNumber from 'bignumber.js'
 
-const { utils: { toChecksumAddress }} = Web3Latest
+const { utils: { toChecksumAddress } } = Web3Latest
 
 const getTokenModAndAddress = createSelector(
   (_: TokenOverlayState, { mod }: TokenOverlayProps) => mod,
@@ -54,8 +54,8 @@ const prefilterByAvailableAuctions = createSelector(
     return tokenList.filter(token => {
       // don't show opposite token as it's already selected for the other position
       // e.g sellToken = ETH, don't show ETH in buyToken
-      token.address = token.address.length > 3 ? toChecksumAddress(token.address) : token.address
-      if (token.isETH ? oppositeAddress.length === '0x0' : token.address === oppositeAddress ) return false
+      token.address = token.address && token.address !== ETH_ADDRESS ? toChecksumAddress(token.address) : token.address
+      if (token.isETH ? oppositeAddress === ETH_ADDRESS : token.address === oppositeAddress) return false
 
       // check, based on MOD, whether to show isETH and WETH or just WETH
       // buy token should NEVER have both WETH and isETH

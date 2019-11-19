@@ -1,4 +1,5 @@
 import { connect } from 'react-redux'
+import Web3Latest from 'web3Latest'
 
 import TokenOverlay from 'components/TokenOverlay'
 import { closeOverlay, selectTokenPairAndRatioPair, resetTokenPairAndCloseOverlay } from 'actions'
@@ -9,7 +10,7 @@ const getTokenAddress = (code: TokenCode) => createSelector(
   ({ tokenList }) => tokenList.defaultTokenList,
   (defaultTokenList) => {
     const token = defaultTokenList.find((t: typeof defaultTokenList[0]) => t.symbol === code)
-    return token && token.address
+    return token && Web3Latest.utils.toChecksumAddress(token.address)
   },
 )
 

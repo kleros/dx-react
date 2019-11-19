@@ -4,6 +4,7 @@ import { promisedDutchX } from './dutchx'
 import { promisedPriceOracle } from './PriceOracle'
 
 import { toBigNumber } from 'web3/lib/utils/utils.js'
+import Web3Latest from 'web3Latest'
 
 import { TokenCode, TokenPair, Account, Balance, BigNumber, AuctionObject, Provider } from 'types'
 import { dxAPI as dutchXAPI, Index, DefaultTokenList, DefaultTokenObject, DutchExchange, Receipt, Hash } from './types'
@@ -11,6 +12,8 @@ import { promisedContractsMap } from './contracts'
 import { AuctionStatus, FIXED_DECIMALS } from 'globals'
 import { ETH_ADDRESS } from 'tokens'
 import { lastArrVal } from 'utils'
+
+const { utils: { toChecksumAddress } } = Web3Latest
 
 let API: dutchXAPI
 export const dxAPI = /* (window as any).AP = */ async (provider?: Provider, force?: boolean | 'FORCE') => {
@@ -504,7 +507,6 @@ export const getUnclaimedSellerFunds = async (pair: TokenPair, index?: Index, ac
     // when it breaks error is still output to console inside Metamask
     // https://github.com/MetaMask/metamask-extension/blob/1f0cf11af1c94e750bbc4c5238c3ee028350a6c6/app/scripts/lib/createErrorMiddleware.js?utf8=%E2%9C%93#L61
     const [claimable] = await DutchX.claimSellerFunds.call(pair, index, account)
-    console.log('claimable: ', claimable)
     return claimable as BigNumber
   } catch (e) {
     console.log('Nothing to claim for', `${pair.sell.symbol}-${pair.buy.symbol}-${index.toString()}`)
@@ -850,7 +852,6 @@ export const getSellerOngoingAuctions = async (
         const pair: TokenPair = { sell, buy },
           inversePair: TokenPair = { sell: buy, buy: sell }
         accum.push(pair)
-        console.log('pair, account, indices: ', pair, account, 0)
         promisedClaimableTokensObject.normal.push(
           getIndicesWithClaimableTokensForSellers(pair, account, 0)
           .then(async ([indices, balances]) => {
@@ -874,7 +875,6 @@ export const getSellerOngoingAuctions = async (
       return accum
     }, [])
 
-    console.log('​ongoingAuctions', ongoingAuctions)
     if (ongoingAuctions.length === 0) return []
 
     // Checks ongoingAuctions Array if each ongoingAuction has claimable Tokens
@@ -1098,7 +1098,6 @@ export const getAvailableAuctionsFromAllTokens = async (tokensJSON: DefaultToken
       const directPromise =  DutchX.getLatestAuctionIndex({ sell, buy })
         .then((latestAuctionIndexDirect) => {
           if (latestAuctionIndexDirect.gt(0)) {
-            console.log(`${sell.symbol}-${buy.symbol} / ${buy.symbol}-${sell.symbol} auction is available, latestIndex = ${latestAuctionIndexDirect}`)
             auctionPairs.push(`${sell.address}-${buy.address}`, `${buy.address}-${sell.address}`)
           }
         })
@@ -1113,6 +1112,7 @@ export const getAvailableAuctionsFromAllTokens = async (tokensJSON: DefaultToken
 }
 
 export const getTokenPriceInUSD = async (tokenAddress: string) => {
+  console.info('getTokenPriceInUSD called for', tokenAddress)
   const { DutchX, PriceOracle } = await dxAPI()
 
   const [ethUSDPrice, WETHaddress] = await Promise.all([
@@ -1120,9 +1120,7 @@ export const getTokenPriceInUSD = async (tokenAddress: string) => {
     DutchX.ethToken(),
   ])
 
-  console.log('ethUSDPrice: ', ethUSDPrice.toString())
-
-  if (tokenAddress === ETH_ADDRESS || tokenAddress === WETHaddress) return ethUSDPrice
+  if (tokenAddress === ETH_ADDRESS || toChecksumAddress(tokenAddress) === toChecksumAddress(WETHaddress)) return ethUSDPrice
 
   const [num, den] = await DutchX.getPriceOfTokenInLastAuction(tokenAddress)
   console.log('PriceOfTokenInLastAuction, num, den: ', num.toString(), den.toString())
