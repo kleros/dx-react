@@ -385,8 +385,7 @@ export const getClosingPrice = () => async (dispatch: Dispatch<any>, getState: a
     if (currAucIdx.lte(0)) return dispatch(setClosingPrice({ sell: sell.symbol, buy: buy.symbol, price: '0' }))
 
     const [pNum, pDen] = await getLastAuctionPrice({ sell, buy }, currAucIdx)
-    const price = (pNum.div(pDen)).toFixed(FIXED_DECIMALS)
-    console.log('lastClosingPrice -> ', price)
+    const price = pNum.div(pDen).toFixed(FIXED_DECIMALS)
 
     return dispatch(setClosingPrice({ sell: sell.symbol, buy: buy.symbol, price }))
   } catch (e) {

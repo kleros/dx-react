@@ -7,7 +7,6 @@ export const reducer = handleActions(
   {
     [setOngoingAuctions.toString()]: (state: AuctionsState, action: any) => {
       const ongoingAuctions = action.payload
-      console.log('ongoingAuctions: ', ongoingAuctions)
       return {
         ...state,
         ongoingAuctions,
