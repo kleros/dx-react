@@ -269,6 +269,7 @@
 
     .tokenItem {
       padding: 5px;
+      word-break: break-all;
     }
   }
 }
@@ -457,6 +458,7 @@
   transition: box-shadow, transform .15s ease;
   text-align: center;
   text-transform: uppercase;
+  word-break: break-all;
 
   @media #{$mobile} {
     padding: 0;
@@ -543,7 +545,7 @@
 
   > big {
     font-family: inherit;
-    font-size: 1.6em;
+    font-size: 1.4em;
     color: $blackShade;
     letter-spacing: 0;
     line-height: 1.4;
