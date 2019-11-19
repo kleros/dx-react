@@ -4,32 +4,8 @@ export { DefaultTokens, DefaultTokenObject }
 
 import { AuctionStatus, ProviderName, ProviderType } from 'globals'
 
-export interface Code2Name {
-  ETH: 'ETHER',
-  WETH: 'WRAPPED ETHER',
-  GNO: 'GNOSIS',
-  REP: 'AUGUR',
-  '1ST': 'FIRST BLOOD',
-  OMG: 'OMISEGO',
-  GNT: 'GOLEM',
-  KNC: 'KYBER',
-  LRC: 'LOOPRING',
-  MGN: 'MAGNOLIA',
-  OCEAN: 'OCEAN',
-  OST: 'OST',
-  OWL: 'OWL',
-  RDN: 'RAIDEN',
-  REQ: 'REQUEST NETWORK',
-  GEN: 'DAOSTACK',
-  DAI: 'DAI',
-  MKR: 'MAKER',
-  SNT: 'STATUS',
-  CVC: 'CIVIC',
-  GRID: 'GRID',
-}
-
-export type TokenCode = keyof Code2Name
-export type TokenName = Code2Name[TokenCode]
+export type TokenCode = string
+export type TokenName = string
 export type TokenAddresses = Account[]
 export type Balance = string
 export type Account = string

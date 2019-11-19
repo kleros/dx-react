@@ -1,6 +1,5 @@
 import React from 'react'
 import TokenItem, { NoTokenItem } from '../TokenItem'
-import { code2tokenMap } from 'tokens'
 import { BigNumber, DefaultTokenObject } from 'types'
 
 export interface TokenPairProps {
@@ -31,7 +30,7 @@ const TokenPair: React.SFC<TokenPairProps> = ({
       {sellToken ?
         <TokenItem
           {...sellToken}
-          name={sellToken.name || code2tokenMap[sellToken.symbol]}
+          name={sellToken.name}
           balance={sellTokenBalance}
           mod="sell"
           onClick={openOverlay}
@@ -53,7 +52,7 @@ const TokenPair: React.SFC<TokenPairProps> = ({
       {buyToken ?
         <TokenItem
           {...buyToken}
-          name={buyToken.name || code2tokenMap[buyToken.symbol]}
+          name={buyToken.name}
           balance={buyTokenBalance}
           mod="buy"
           onClick={openOverlay}

@@ -6,7 +6,7 @@ import TokenOverlayHeader from 'components/TokenOverlayHeader'
 import TokenList from 'components/TokenList'
 import Loader from 'components/Loader'
 
-import { code2tokenMap, ETH_ADDRESS } from 'tokens'
+import { ETH_ADDRESS } from 'tokens'
 import { DefaultTokenObject, TokenBalances, TokenMod, AccountsSet, AvailableAuctions, TokenPair, Account } from 'types'
 import { handleKeyDown } from 'utils'
 import BigNumber from 'bignumber.js'
@@ -120,7 +120,7 @@ const filterTokens = createSelector(
     ?
     tokens.filter(({
       symbol = '',
-      name = code2tokenMap[symbol] || '',
+      name = '',
     }) => symbol.toUpperCase().includes(filter) || name.toUpperCase().includes(filter))
     :
     tokens,

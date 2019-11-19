@@ -1,4 +1,3 @@
-import { codeList } from 'tokens'
 import { TokenBalances, RatioPairs, TokenPair } from 'types'
 
 export const getRandomInt = (min: number, max: number): number => {
@@ -49,18 +48,18 @@ export const auctionFactory = (amt: number, arr: string[]) => {
  * } for each token from codeList
  * @param codes
  */
-export const generateTokenBalances = (codes = codeList) => codes.reduce(
-  (acc, code) => (acc[code] = (Math.random() * 5).toFixed(9), acc), {},
+export const generateTokenBalances = (codes :any = []) => codes.reduce(
+  (acc: any, code: any) => (acc[code] = (Math.random() * 5).toFixed(9), acc), {},
 ) as TokenBalances
 
 /*
 * generates ratioPairs = {
 *  { buy: 'GNO' sell: 'ETH', price: 0.31214312 },
    { buy: 'OMG', sell: 'ETH', price: 0.01976562 },
-*  ...
+*  ...s
 * } from codeList
 */
-export const generateRatioPairs = (codes = codeList) => codes.reduce((acc, code) => {
+export const generateRatioPairs = (codes :any = []) => codes.reduce((acc: any, code: any) => {
   if (code !== 'ETH') {
     acc.push({
       sell: 'ETH',
@@ -89,7 +88,7 @@ const samplePair = (list: any[]): [any, any] => {
  *  buy: 'GNO'
  * } by taking random TokenCode pair from codeList
  */
-export const generateTokenPair = (codes = codeList): TokenPair => {
+export const generateTokenPair = (codes : any = []): TokenPair => {
   const [sell, buy] = samplePair(codes)
   return { sell, buy, sellAmount: '0' }
 }

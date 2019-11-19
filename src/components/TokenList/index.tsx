@@ -1,6 +1,5 @@
 import React from 'react'
 import TokenItem from '../TokenItem'
-import { code2tokenMap } from 'tokens'
 import { TokenBalances, DefaultTokenObject, AccountsSet } from 'types'
 
 interface TokenListProps {
@@ -19,7 +18,7 @@ const TokenList: React.SFC<TokenListProps> = ({ tokens, balances, onTokenClick, 
     }).map((token: DefaultTokenObject) =>
       <TokenItem
         {...token}
-        name={token.name || code2tokenMap[token.symbol]}
+        name={token.name}
         balance={balances && token.address && balances[token.address] ? balances[token.address] : 0}
         key={token.address}
         onClick={onTokenClick}
