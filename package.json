@@ -1,6 +1,6 @@
 {
   "name": "@kleros/dx-react",
-  "version": "2.6.26",
+  "version": "2.6.29",
   "description": "slow.trade - ERC20 Trading Platform",
   "main": "src/index.tsx",
   "files": [
@@ -45,7 +45,8 @@
     "add2ipfs": "node ./test/scripts/add2ipfs.js",
     "simulateAuction": "truffle exec test/trufflescripts/add_token_pair.js --pair eth,gno && truffle exec test/trufflescripts/deposit.js --master --gno 20000 && truffle exec test/trufflescripts/increase_time.js -h 8 && truffle exec test/trufflescripts/buy_order.js --master -n 100e18 && truffle exec test/trufflescripts/increase_time.js -h 1",
     "simulateTheoreticallyClosedAuction": "truffle exec test/trufflescripts/add_token_pair.js --pair eth,gno && truffle exec test/trufflescripts/deposit.js --master --gno 20000e18 && truffle exec test/trufflescripts/increase_time.js -h 50 && truffle exec test/trufflescripts/increase_time.js -h 1",
-    "simulateTheoreticallyClosedAuctionWithBuyVolume": "truffle exec test/trufflescripts/add_token_pair.js --pair eth,gno && truffle exec test/trufflescripts/deposit.js --master --gno 20000e18 && truffle exec test/trufflescripts/increase_time.js -h 8 && truffle exec test/trufflescripts/buy_order.js --master -n 1e17 && truffle exec test/trufflescripts/increase_time.js -h 50"
+    "simulateTheoreticallyClosedAuctionWithBuyVolume": "truffle exec test/trufflescripts/add_token_pair.js --pair eth,gno && truffle exec test/trufflescripts/deposit.js --master --gno 20000e18 && truffle exec test/trufflescripts/increase_time.js -h 8 && truffle exec test/trufflescripts/buy_order.js --master -n 1e17 && truffle exec test/trufflescripts/increase_time.js -h 50",
+    "publishPkg": "npm run build:all:prod && npm publish"
   },
   "lint-staged": {
     "@(src|test)/**/*.js?(x)": [

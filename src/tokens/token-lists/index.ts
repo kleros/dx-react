@@ -76,7 +76,7 @@ export default async (network: string, web3: any) => {
         const result = await erc20BadgeContract.methods
           .queryAddresses(
             lastAddress, // A token address to start/end the query from. Set to zero means unused.
-            1000, // Number of items to return at once.
+            200, // Number of items to return at once.
             filter,
             true, // Return oldest first.
           ).call()
@@ -136,7 +136,7 @@ export default async (network: string, web3: any) => {
         const result = await dutchXbadgeContract.methods
           .queryAddresses(
             lastAddress, // A token address to start/end the query from. Set to zero means unused.
-            1000, // Number of items to return at once.
+            200, // Number of items to return at once.
             filter,
             true, // Return oldest first.
           ).call()

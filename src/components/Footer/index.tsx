@@ -3,7 +3,6 @@ import appInfo from '../../../package.json'
 import { connect } from 'react-redux'
 import { State } from 'types'
 
-import 'assets/pdf/PrivacyPolicy.pdf'
 import { getActiveProviderObject } from 'selectors'
 
 import { Link } from 'react-router-dom'

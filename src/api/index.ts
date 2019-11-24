@@ -1112,7 +1112,6 @@ export const getAvailableAuctionsFromAllTokens = async (tokensJSON: DefaultToken
 }
 
 export const getTokenPriceInUSD = async (tokenAddress: string) => {
-  console.info('getTokenPriceInUSD called for', tokenAddress)
   const { DutchX, PriceOracle } = await dxAPI()
 
   const [ethUSDPrice, WETHaddress] = await Promise.all([
