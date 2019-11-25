@@ -180,11 +180,17 @@ export default (Component: React.ClassType<any, any, any>): React.ClassType<any,
         &&
         (!address2Token[sell.toLowerCase()] || !address2Token[buy.toLowerCase()])
       ) {
-        const error = `${sell} / ${buy} pairing is not supported in the Frontend UI, please try another token pairing.`
-        console.warn(error)
-        this.setState({
-          error,
-        })
+        if (Object.keys(address2Token).length > 0) {
+          const error = `${sell} / ${buy} pairing is not supported in the Frontend UI, please try another token pairing.`
+          console.warn(error)
+          this.setState({
+            error,
+          })
+        } else {
+          this.setState({
+            error: 'Loading tokens...',
+          })
+        }
         return
       }
 
