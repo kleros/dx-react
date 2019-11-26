@@ -13,6 +13,7 @@ export interface MenuAuctionProps {
   claimAndWithdrawSellerFundsFromSeveral(
     sell: Partial<DefaultTokenObject>, buy: Partial<DefaultTokenObject>, indicesWithSellerBalance?: number,
   ): any;
+  dxBalances: any;
   push({}): RouterAction;
 }
 
@@ -43,6 +44,7 @@ export class MenuAuctions extends React.Component <MenuAuctionProps> {
       ongoingAuctions,
       claimAndWithdrawSellerFundsFromSeveral,
       push,
+      dxBalances,
     } = this.props
 
     return (
@@ -214,7 +216,7 @@ export class MenuAuctions extends React.Component <MenuAuctionProps> {
           : <table>
               <tbody>
                 <tr>
-                  <td>NO AUCTIONS TO SHOW</td>
+                  <td>{Object.keys(dxBalances).length === 0 ? 'Loading...' : 'NO AUCTIONS TO SHOW'}</td>
                 </tr>
               </tbody>
             </table>

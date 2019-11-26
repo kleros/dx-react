@@ -23,6 +23,7 @@ const constructKnobs = (
   claimAndWithdrawSellerFundsFromSeveral: () => console.log('Claiming and withdrawing!!'),
   claimable: boolean('claimable', true),
   push: () => console.log('Moving to auction') as any,
+  dxBalances: {},
 })
 
 storiesOf('MenuAuctions', module)

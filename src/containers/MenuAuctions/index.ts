@@ -11,6 +11,7 @@ import { auctionClaimable } from 'selectors'
 const mapStateToProps = (state: State) => ({
   ongoingAuctions: state.auctions.ongoingAuctions,
   claimable: auctionClaimable(state),
+  dxBalances: state.dxBalances,
 })
 
 export default connect(mapStateToProps, { claimAndWithdrawSellerFundsFromSeveral, push })(MenuAuctions as any)
