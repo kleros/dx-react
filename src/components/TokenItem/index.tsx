@@ -30,7 +30,7 @@ export const NoTokenItem: React.SFC<{ onClick: (rest: any) => void, mod: string 
 }
 
 const TokenItem: React.SFC<TokenItemProps> = ({ onClick, generatesMGN = true, ...rest }) => {
-  const { mod, balance, name, symbol, decimals, address, symbolMultihash, isETH, balanceLoaded } = rest
+  const { mod, balance, name, symbol, decimals, address, symbolMultihash, isETH, balanceLoaded, usingDefaultDecimals } = rest
   const dotenvParsed: any = process.env.DOTENV_PARSED
 
   return (
@@ -59,6 +59,8 @@ const TokenItem: React.SFC<TokenItemProps> = ({ onClick, generatesMGN = true, ..
         </>
       )}
       {!generatesMGN && <p className="noMGN">Any auction with <strong>{symbol || address}</strong> won't generate MGN</p>}
+      {usingDefaultDecimals && <p className="noMGN"><strong>Warning:</strong>Token does not publish its number of decimal places.</p>}
+
     </div>
   )
 }

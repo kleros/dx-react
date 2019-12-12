@@ -16,6 +16,7 @@ export interface DefaultTokenObject {
   isETH?: boolean;
   hasDutchXBadge?: boolean;
   symbolMultihash?: string;
+  usingDefaultDecimals?: boolean;
 }
 export type DefaultTokenList = DefaultTokenObject[]
 

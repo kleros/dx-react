@@ -59,6 +59,7 @@ export default async (network: string, web3: any) => {
     decimals: 18,
     isETH: true,
     hasDutchXBadge: false,
+    usingDefaultDecimals: false,
   }]
 
   let tokensWithDutchXBadge: string[] = []
@@ -122,6 +123,7 @@ export default async (network: string, web3: any) => {
           else {
             console.warn('Using default: 18')
             token.decimals = 18
+            token.usingDefaultDecimals = true
           }
         }
       }))
