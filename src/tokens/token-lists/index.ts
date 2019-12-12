@@ -58,10 +58,10 @@ export default async (network: string, web3: any) => {
     address: '0x0',
     decimals: 18,
     isETH: true,
-    hasTrueCryptosystemBadge: false,
+    hasDutchXBadge: false,
   }]
 
-  let tokensWithTrueCryptosystemBadge: string[] = []
+  let tokensWithDutchXBadge: string[] = []
 
   // Fetch tokens with the DutchX badge and tokens with the true cryptosystem badge in parallel.
   // Tokens with the true cryptosystem badge are displayed first in the list.
@@ -128,7 +128,7 @@ export default async (network: string, web3: any) => {
 
     })(),
     (async () => {
-      // Fetch tokens with the true cryptosystem badge
+      // Fetch tokens with the dutchX badge
       let addressesWithBadge: string[] = []
       let hasMore = true
       let lastAddress = zeroAddress
@@ -148,13 +148,13 @@ export default async (network: string, web3: any) => {
         hasMore = result.hasMore
       }
 
-      tokensWithTrueCryptosystemBadge = addressesWithBadge
+      tokensWithDutchXBadge = addressesWithBadge
     })(),
   ])
 
-  elements.filter(token => tokensWithTrueCryptosystemBadge.includes(token.address))
+  elements.filter(token => tokensWithDutchXBadge.includes(token.address))
     .forEach(token => {
-      token.hasTrueCryptosystemBadge = true
+      token.hasDutchXBadge = true
     })
 
   const tokenList = {
