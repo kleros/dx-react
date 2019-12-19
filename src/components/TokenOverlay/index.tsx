@@ -26,7 +26,7 @@ const getTokenModAndAddress = createSelector(
     const oppositeToken = tokenPair[mod === 'sell' ? 'buy' : 'sell']
 
     const oppositeAddress = oppositeToken &&
-      (oppositeToken.isETH ? toChecksumAddress(WETHAddress) :  toChecksumAddress(oppositeToken.address))
+      (oppositeToken.isETH ? toChecksumAddress(WETHAddress) : toChecksumAddress(oppositeToken.address))
 
     return {
       mod,
@@ -174,7 +174,7 @@ class TokenOverlay extends Component<TokenOverlayProps, TokenOverlayState> {
   }
 
   render() {
-    const { tokenBalances, approvedTokens, closeOverlay, resettable, resetTokenPairAndCloseOverlay } = this.props
+    const { tokenBalances, approvedTokens, closeOverlay, resettable, resetTokenPairAndCloseOverlay, tokenList } = this.props
     const { filter } = this.state
 
     const filteredTokens = filterTokens(this.state, this.props)
@@ -189,7 +189,7 @@ class TokenOverlay extends Component<TokenOverlayProps, TokenOverlayState> {
           reset={resetTokenPairAndCloseOverlay}
         />
         <Loader
-          hasData={filteredTokens.length > 0 || filter.length > 0}
+          hasData={tokenList.length > 0}
           message="Loading tokens - please wait"
           reSize={0.72}
           render={() =>

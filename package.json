@@ -1,6 +1,6 @@
 {
   "name": "@kleros/dx-react",
-  "version": "2.6.31",
+  "version": "2.6.32",
   "description": "slow.trade - ERC20 Trading Platform",
   "main": "src/index.tsx",
   "files": [

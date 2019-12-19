@@ -25,6 +25,12 @@ const TokenList: React.SFC<TokenListProps> = ({ tokens, balances, onTokenClick, 
         generatesMGN={token.isETH || approvedTokens.has(token.address)}
         balanceLoaded={!!balances && !!token.address && !!balances[token.address]}
       />)}
+    {tokens.length === 0 && (
+      <div className="spinnerContainer">
+        <h2>This token has no trading pairs.</h2>
+        <h4>To add the token, please see <a href="https://dutchx.readthedocs.io/en/latest/add-token-pair.html">the documentation</a></h4> for instructions.
+      </div>
+    )}
   </div>
 )
 
