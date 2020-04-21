@@ -1104,7 +1104,7 @@ export const Help = () =>
     <section className="content">
       <p>Haven’t found the answer to your question in the <Link to={URLS.FAQ + '#faqs'}>FAQ</Link>?
         <br />
-        For all questions from and for developers, check out the resources available on <a href={URLS.DUTCHX_DEVS_AND_API} target="_blank" rel="noopener noreferrer">Devs &amp; API</a>.
+        DutchX belongs to the dxDAO. You can join its <a href="https://t.me/dxDAO" target="_blank" rel="noopener noreferrer">telegram channel</a>.
         <br /><br />
         slow.trade also has a <a href="https://medium.com/@slow_trade" target="_blank" rel="noopener noreferrer">blog</a>.
       </p>
