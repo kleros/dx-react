@@ -1107,10 +1107,6 @@ export const Help = () =>
         For all questions from and for developers, check out the resources available on <a href={URLS.DUTCHX_DEVS_AND_API} target="_blank" rel="noopener noreferrer">Devs &amp; API</a>.
         <br /><br />
         slow.trade also has a <a href="https://medium.com/@slow_trade" target="_blank" rel="noopener noreferrer">blog</a>.
-        <br /><br />
-        You may also reach us at <a href="mailTo: support@slow.trade">support@slow.trade</a>
-        <br /><br />
-        For press requests, please contact <a href="mailTo: press@slow.trade">press@slow.trade</a>
       </p>
     </section>
   </article>
